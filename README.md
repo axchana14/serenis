@@ -2,27 +2,27 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# Serenis 🎯
 
-## Basic Details
+## Serenis, is an aesthetic, AI-powered mental health sanctuary designed to provide a calming space for emotional expression. It combines modern web technology with psychological wellness practices to help users process their thoughts and track their emotional journey over time.
 
-### Team Name: [Name]
+### Team Name: AstroBytes
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: B S HARIPRIYA - COLLEGE OF ENGINEERING ATTINGAL
+- Member 2: Archana P S - COLLEGE OF ENGINEERING ATTINGAL
 
 ### Hosted Project Link
 [mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+Serenis is a high-fidelity "emotional sanctuary" that merges a calming glassmorphic interface with adaptive AI to provide empathetic counseling and mental health tracking. It transforms therapeutic practices like journaling and guided breathing into a fluid, visual experience, allowing users to map their emotional tides and find instant tranquility in a digital space.
 
 ### The Problem statement
-[What problem are you solving?]
+Modern digital environments often exacerbate mental fatigue through "doom-scrolling" and high-stress interfaces, leaving users without a private, calming space to process emotions. Current wellness apps frequently feel clinical or transactional, failing to provide the immediate sensory relief and empathetic, real-time engagement needed to bridge the gap between high-tech AI and high-touch mental support.
 
 ### The Solution
-[How are you solving it?]
+Serenis provides a "digital sanctuary" through a glassmorphic interface that uses rhythmic ocean animations to immediately lower cortisol levels and induce a flow state. It bridges the gap between AI and wellness by offering an empathetic, dual-mode chat system for instant emotional support, combined with a visual mood-tracking calendar that transforms abstract feelings into a tangible, long-term "life-tide" timeline.
 
 ---
 
@@ -31,31 +31,96 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+Languages used: JavaScript (ES6+), HTML5, CSS3, and SQL.
+
+Frameworks used: Express.js (Node.js web framework).
+
+Libraries used: dotenv (environment management), mysql2 (database driver), cors (cross-origin resource sharing), and native Web Speech API (for voice integration).
+
+Tools used: VS Code (Editor), Git (Version Control), Node Package Manager (NPM), and MySQL Workbench.
 
 **For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+Processor (CPU): Minimum Dual-Core 2.0GHz or higher to handle concurrent Node.js processes and smooth CSS animations.
 
+Memory (RAM): 8GB RAM recommended to run the VS Code IDE, local MySQL server, and browser-based testing simultaneously.
+
+Storage: 256GB SSD (Solid State Drive) for fast read/write access to project dependencies and local database records.
 ---
 
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+-Dual-Mode AI Interaction: Offers a Vent Mode for unfiltered emotional release and an Advice Mode for structured guidance and thought reframing.
+
+-Aesthetic "Sea Wave" Interface: Utilizes glassmorphism and rhythmic ocean animations to induce a "flow state" and reduce user stress levels.
+
+-Visual Life-Tide Mapping: Features a "Cosmic Grid" calendar that color-codes daily entries based on mood, creating a long-term emotional timeline.
+
+-Intelligent Journaling: Provides a private space for self-reflection with daily prompts and instant mood selection stored via Local Storage.
+
+-Cinematic Breathing Reset: A guided mindfulness tool that uses visual pulses (Inhale/Hold/Exhale) to help regulate the user's nervous system.
+
+-Real-Time Emotion Detection: Analyzes user input to dynamically update the "Sea Spirit" status and adjust the AI's empathetic tone.
 
 ---
 
 ## Implementation
+1. Environment Setup & Configuration
+This phase focuses on the foundational "plumbing" of the project.
+
+Server Initialization: Setting up the Node.js environment and Express framework to handle HTTP requests.
+
+Database Schema: Creating the MySQL tables for user profiles, mood logs, and journal entries.
+
+Secure Integration: Implementing .env files to hide sensitive AI API keys and database credentials.
+
+2. Frontend Architecture (The Sanctuary)
+Focus on how you built the "look and feel" and user interaction.
+
+Glassmorphic UI: Using CSS3 (Flexbox/Grid) and custom animations to create the translucent, "Sea Wave" aesthetic.
+
+State Management: Using a central SerenisApp JavaScript class to manage UI transitions (switching between Chat, Journal, and History).
+
+Local Persistence: Utilizing Browser Local Storage to save mood data instantly without needing a page refresh.
+
+3. Backend Logic & AI Services
+Explain how the "brain" of your app works.
+
+Modular Routing: Using chatRoutes.js to separate API endpoints from the main server logic for better maintainability.
+
+AI Service Integration: Connecting to the Gemini/AI API via chatService.js to generate empathetic responses.
+
+Emotion Analytics: Running user text through emotionService.js to detect sentiment and categorize it into specific "Sea Spirit" moods.
+
+4. Specific Feature Implementation
+Briefly explain the "how-to" of your unique tools.
+
+Voice Integration: Implementing the Web Speech API to capture audio and convert it to text for hands-free venting.
+
+Breathing Module: Creating a JavaScript-controlled timer that toggles CSS classes to guide users through 4-7-8 breathing cycles.
+
+The Cosmic Grid: Writing logic to map date-stamped mood entries from the database onto a visual calendar grid.
 
 ### For Software:
+1. Modular Architecture Implementation
+The software is implemented using a separation of concerns strategy to ensure that UI changes don't break the logical "brain" of the app.
+
+Frontend-Backend Bridge: The frontend uses the fetch() API to send user messages to the Node.js server, which routes them through chatRoutes.js.
+
+Service Layer Pattern: Logic is abstracted into specialized services (e.g., chatService.js for AI logic and emotionService.js for sentiment analysis) to keep the main server.js clean and scalable.
+
+Environment Isolation: Sensitive configurations like database credentials and API keys are stored in a .env file, loaded via the dotenv library to ensure security.
+
+2. Logic & Data Flow
+Stateful UI Management: The SerenisApp class in the frontend manages the application's "state" (current mood, active tab, chat history) to ensure a smooth, Single Page Application (SPA) experience without browser refreshes.
+
+Persistent Storage Logic:
+
+Immediate: Current session data and journal entries are saved to Local Storage for instant access.
+
+Long-term: The db.js module handles the connection to MySQL, allowing for permanent record-keeping of user profiles and history.
+
+AI Processing Pipeline: When a user "vents," the software passes the text through thoughtReframe.js to analyze the psychological perspective before the AI generates a response.
 
 #### Installation
 ```bash
