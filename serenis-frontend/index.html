@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERENIS | Emotional First-Aid</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lexend:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Oceanic Sea Wave Background -->
+    <div class="wave-container">
+        <div class="wave back"></div>
+        <div class="wave middle"></div>
+        <div class="wave"></div>
+    </div>
+    <div class="noise-overlay"></div>
+
+    <div id="app" class="app-container">
+        <!-- Main Sidebar -->
+        <aside class="sidebar-glass">
+            <div class="logo-area">
+                <h1>SERENIS</h1>
+                <p>"You are the entire ocean in a drop."</p>
+            </div>
+
+            <nav class="nav-group">
+                <button id="chat-nav-btn" class="nav-btn active">
+                    <span class="icon">💬</span>
+                    <span class="label">Chat Room</span>
+                </button>
+                <button id="calendar-btn" class="nav-btn">
+                    <span class="icon">📅</span>
+                    <span class="label">History</span>
+                </button>
+                <button id="reset-btn" class="nav-btn">
+                    <span class="icon">🧘</span>
+                    <span class="label">60s Reset</span>
+                </button>
+                <button id="journal-btn" class="nav-btn">
+                    <span class="icon">✍️</span>
+                    <span class="label">Journal</span>
+                </button>
+            </nav>
+
+            <div class="mic-status-container">
+                <div id="mic-status" class="status-orb"></div>
+                <span id="status-text">Ready to listen</span>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content -->
+        <main class="viewport">
+            <!-- Chat Space -->
+            <section id="chat-section" class="scene active">
+                <div id="chat-messages" class="scroll-area">
+                    <div class="message bot entry-anim">
+                        <div class="bubble-glass">Hi, I'm Serenis. How are you feeling today?</div>
+                    </div>
+                </div>
+
+                <div class="control-pad">
+                    <div class="mode-pill">
+                        <button id="vent-mode" class="pill-btn active" data-mode="vent">Just Vent</button>
+                        <button id="advice-mode" class="pill-btn" data-mode="advice">Get Advice</button>
+                    </div>
+
+                    <div class="input-glass">
+                        <input type="text" id="chat-input" placeholder="Type or say something..." autocomplete="off">
+                        <div class="input-actions">
+                            <button id="mic-btn" class="icon-btn mic" title="Voice Input">🎤</button>
+                            <button id="send-btn" class="icon-btn send" title="Send message">✦</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Space -->
+            <section id="calendar-section" class="scene">
+                <div class="calendar-perspective">
+                    <header class="scene-header">
+                        <h2>Your Mood History</h2>
+                        <p>Track your feelings over the month</p>
+                    </header>
+                    <div id="calendar-grid" class="cosmic-grid">
+                        <!-- Calendar days appear here -->
+                    </div>
+                    <div class="cosmic-legend">
+                        <span class="legend-dot calm"></span> Calm
+                        <span class="legend-dot sad"></span> Sad
+                        <span class="legend-dot anxious"></span> Anxious
+                        <span class="legend-dot overwhelmed"></span> Heavy
+                        <span class="legend-dot hopeless"></span> Dark
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reset Scene Overlay -->
+            <div id="reset-section" class="overlay-scene">
+                <div class="glass-modal reset-card">
+                    <button class="close-scene">&times;</button>
+                    <div class="reset-flow">
+                        <h2 class="breath-text">Breathe in...</h2>
+                        <div class="breath-indicator">
+                            <div class="breath-circle"></div>
+                            <div id="reset-progress" class="breath-bar"></div>
+                        </div>
+                        <p id="reset-text">Let's find some calm together.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redesigned Journal Overlay -->
+            <div id="journal-section" class="overlay-scene">
+                <div class="glass-modal journal-card-expanded">
+                    <button class="close-scene">&times;</button>
+
+                    <div class="journal-header">
+                        <div class="journal-tabs">
+                            <button id="tab-write" class="tab-btn active">Write Today</button>
+                            <button id="tab-history" class="tab-btn">My Progress</button>
+                        </div>
+                    </div>
+
+                    <!-- WRITE VIEW -->
+                    <div id="journal-write-view" class="journal-content-view">
+                        <h2 class="title-font">How are you feeling today?</h2>
+                        <div class="mood-selector-bar">
+                            <div class="mood-item">
+                                <button class="mood-icon" data-mood="calm" title="Calm">🌿</button>
+                                <span>Calm</span>
+                            </div>
+                            <div class="mood-item">
+                                <button class="mood-icon" data-mood="sad" title="Sad">💧</button>
+                                <span>Sad</span>
+                            </div>
+                            <div class="mood-item">
+                                <button class="mood-icon" data-mood="anxious" title="Anxious">☁️</button>
+                                <span>Anxious</span>
+                            </div>
+                            <div class="mood-item">
+                                <button class="mood-icon" data-mood="overwhelmed" title="Heavy">🌊</button>
+                                <span>Heavy</span>
+                            </div>
+                            <div class="mood-item">
+                                <button class="mood-icon" data-mood="hopeless" title="Dark">🌑</button>
+                                <span>Dark</span>
+                            </div>
+                        </div>
+
+                        <div class="journal-prompt-box">
+                            <span class="prompt-label">Today's Reflection:</span>
+                            <p id="daily-prompt">What's one small thing that felt okay today?</p>
+                        </div>
+
+                        <textarea id="journal-input" placeholder="Let your thoughts flow..."></textarea>
+
+                        <div id="journal-result" class="result-glass hidden">
+                            <div class="analysis-blob">
+                                <span id="journal-emotion" class="sentiment-tag">Detected Spirit</span>
+                                <p id="summary-text"></p>
+                            </div>
+                        </div>
+
+                        <button id="submit-journal" class="action-pill">Save Journal</button>
+                    </div>
+
+                    <!-- HISTORY/CALENDAR VIEW -->
+                    <div id="journal-history-view" class="journal-content-view hidden">
+                        <h2 class="title-font">Journal History</h2>
+                        <p class="subtitle">Select a date to see your past entries.</p>
+                        <div id="mini-calendar-grid" class="mini-grid">
+                            <!-- Mini calendar loaded here -->
+                        </div>
+                        <div class="mini-legend">
+                            <span class="dot calm"></span>
+                            <span class="dot sad"></span>
+                            <span class="dot anxious"></span>
+                            <span class="dot overwhelmed"></span>
+                            <span class="dot hopeless"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Micro-Win Scene Overlay -->
+            <div id="microwin-section" class="overlay-scene">
+                <div class="glass-modal win-card">
+                    <h2 class="title-font">A Tiny Light</h2>
+                    <p>What's one small thing you did today that deserves a smile?</p>
+                    <input type="text" id="microwin-input" placeholder="Even a small breath counts...">
+                    <button id="submit-microwin" class="action-pill">Honor This</button>
+                    <div id="microwin-response" class="glow-response hidden"></div>
+                </div>
+            </div>
+
+            <!-- Detailed Entry Scene -->
+            <div id="detail-section" class="overlay-scene">
+                <div class="glass-modal detail-card">
+                    <button class="close-scene">&times;</button>
+                    <h2 id="detail-date" class="title-font">Memory</h2>
+                    <div id="detail-content" class="memory-scroll"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
