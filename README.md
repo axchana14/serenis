@@ -56,13 +56,13 @@ npm run dev
 ### For Software:
 **Screenshots (Add at least 3)**
 
-![Screenshot1](client/assets/img/chat_demo.png) 
+![Screenshot1](1.jpeg) 
 *The main chat sanctuary where users interact with Serenis.*
 
-![Screenshot2](client/assets/img/reset_demo.png) 
+![Screenshot2](2.jpeg) 
 *The 60-second mindful reset interface during a breathing cycle.*
 
-![Screenshot3](client/assets/img/journal_demo.png) 
+![Screenshot3](3.jpeg) 
 *The journaling system with mood tracking and progress history.*
 
 ### Diagrams
