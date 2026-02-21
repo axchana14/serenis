@@ -59,11 +59,9 @@ npm run dev
 ![Screenshot1](1.jpeg) 
 *The main chat sanctuary where users interact with Serenis.*
 
-![Screenshot2](2.jpeg) 
+![Screenshot2](3.jpeg) 
 *The 60-second mindful reset interface during a breathing cycle.*
 
-![Screenshot3](3.jpeg) 
-*The journaling system with mood tracking and progress history.*
 
 ### Diagrams
 **System Architecture:**
