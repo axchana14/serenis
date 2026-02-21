@@ -12,13 +12,12 @@ The project focuses on clean design, modular code structure, and practical imple
 ### Team Name: AstroBytes
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+
 - Member 1:Archana P S - College of engineering attingal 
-- Member 2: [Name] - College of engineering attingal 
+- Member 2:B S Haripriya - College of engineering attingal 
 
 ### Hosted Project Link
-[mention your project hosted link here]
+
 
 serenis-pi.vercel.appCollapse commentComment on lines R13 to R17coderabbitai[bot] commented on Feb 21, 2026 coderabbitai[bot]on Feb 21, 2026More actions⚠️ Potential issue | 🟡 Minor
 
