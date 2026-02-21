@@ -1,176 +1,133 @@
-/**
- * SERENIS | Frontend Logic v2 (Real Data Edition)
- */
+import api from './services/api.js';
+import storage from './services/storage.js';
+import speech from './services/speech.js';
 
+/**
+ * SERENIS | Main Application v3 (Modular Edition)
+ */
 class SerenisApp {
     constructor() {
         this.initElements();
         this.initState();
         this.initEvents();
         this.initSpeech();
-        this.loadMoodTimeline(); 
+        this.loadMoodTimeline();
 
-        // Proactive Greeting
         setTimeout(() => {
             this.addMessage("Welcome back to your sanctuary. I've been waiting for you—how are you feeling as we begin our session today?", 'bot');
         }, 1200);
     }
 
     initElements() {
-        // Core Layout
         this.chatInput = document.getElementById('chat-input');
         this.sendBtn = document.getElementById('send-btn');
-        this.scrollArea = document.getElementById('chat-messages'); // Changed from .scroll-area for better targeting
+        this.scrollArea = document.getElementById('chat-messages');
         this.ventBtn = document.getElementById('vent-mode');
         this.adviceBtn = document.getElementById('advice-mode');
-
-        // Scene Navigation
         this.chatNavBtn = document.getElementById('chat-nav-btn');
         this.calendarBtn = document.getElementById('calendar-btn');
         this.chatSection = document.getElementById('chat-section');
         this.calendarSection = document.getElementById('calendar-section');
-
-        // Status
         this.micBtn = document.getElementById('mic-btn');
-        this.statusOrb = document.getElementById('mic-status'); // Fixed: Matched HTML ID
+        this.statusOrb = document.getElementById('mic-status');
         this.statusText = document.getElementById('status-text');
-
-        // Overlays & Modals
         this.resetBtn = document.getElementById('reset-btn');
         this.journalBtn = document.getElementById('journal-btn');
         this.overlays = document.querySelectorAll('.overlay-scene');
         this.closeBtns = document.querySelectorAll('.close-scene');
-
-        // Journal elements
         this.tabWrite = document.getElementById('tab-write');
         this.tabHistory = document.getElementById('tab-history');
         this.writeView = document.getElementById('journal-write-view');
         this.historyView = document.getElementById('journal-history-view');
         this.moodIcons = document.querySelectorAll('.mood-icon');
-        this.dailyPrompt = document.getElementById('daily-prompt');
         this.journalInput = document.getElementById('journal-input');
         this.submitJournal = document.getElementById('submit-journal');
-        this.journalResult = document.getElementById('journal-result');
-        this.summaryText = document.getElementById('summary-text');
-        this.miniGrid = document.getElementById('mini-calendar-grid');
-
-        // Global Calendar
         this.calendarGrid = document.getElementById('calendar-grid');
     }
 
     initState() {
         this.currentMode = 'vent';
         this.isRecording = false;
+        this.userData = storage.get();
         this.speechMetrics = { speed: 0, pauses: 0 };
-        
-        // Use the IP to avoid 'localhost' origin conflicts
-        this.apiBase = 'http://127.0.0.1:5000'; 
-        
-        this.activeScene = 'chat';
-        this.selectedMood = null;
-        this.prompts = [
-            "What happened today?",
-            "How are you feeling right now?",
-            "What's one thing you're grateful for today?",
-            "Is there something you'd like to get off your chest?",
-            "What are your goals for tomorrow?"
-        ];
-
-        this.storageKey = 'serenis_data_v2';
-        this.loadFromStorage();
-    }
-
-    loadFromStorage() {
-        const raw = localStorage.getItem(this.storageKey);
-        this.userData = raw ? JSON.parse(raw) : { moods: {}, journals: {} };
-    }
-
-    saveToStorage() {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.userData));
     }
 
     initEvents() {
-        // Chat Actions
-        if(this.sendBtn) this.sendBtn.addEventListener('click', () => this.handleSendMessage());
-        if(this.chatInput) {
+        if (this.sendBtn) this.sendBtn.addEventListener('click', () => this.handleSendMessage());
+        if (this.chatInput) {
             this.chatInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') this.handleSendMessage();
             });
         }
+        if (this.ventBtn) this.ventBtn.addEventListener('click', () => this.toggleChatMode('vent'));
+        if (this.adviceBtn) this.adviceBtn.addEventListener('click', () => this.toggleChatMode('advice'));
+        if (this.chatNavBtn) this.chatNavBtn.addEventListener('click', () => this.switchScene('chat'));
+        if (this.calendarBtn) this.calendarBtn.addEventListener('click', () => this.switchScene('calendar'));
+        if (this.resetBtn) this.resetBtn.addEventListener('click', () => this.toggleOverlay('reset-section', true));
+        if (this.journalBtn) this.journalBtn.addEventListener('click', () => this.toggleOverlay('journal-section', true));
 
-        // Mode Toggles
-        if(this.ventBtn) this.ventBtn.addEventListener('click', () => this.toggleChatMode('vent'));
-        if(this.adviceBtn) this.adviceBtn.addEventListener('click', () => this.toggleChatMode('advice'));
-
-        // Navigation
-        if(this.chatNavBtn) this.chatNavBtn.addEventListener('click', () => this.switchScene('chat'));
-        if(this.calendarBtn) this.calendarBtn.addEventListener('click', () => this.switchScene('calendar'));
-
-        // Sidebar Utils
-        if(this.resetBtn) this.resetBtn.addEventListener('click', () => this.toggleOverlay('reset-section', true));
-        if(this.journalBtn) this.journalBtn.addEventListener('click', () => this.openJournal());
-
-        // Generic Close
         this.closeBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const overlay = e.target.closest('.overlay-scene');
-                if(overlay) this.toggleOverlay(overlay.id, false);
+                if (overlay) this.toggleOverlay(overlay.id, false);
             });
         });
 
-        // Journal Logic
-        if(this.tabWrite) this.tabWrite.addEventListener('click', () => this.switchJournalTab('write'));
-        if(this.tabHistory) this.tabHistory.addEventListener('click', () => this.switchJournalTab('history'));
-        this.moodIcons.forEach(btn => {
-            btn.addEventListener('click', () => this.selectJournalMood(btn.dataset.mood));
-        });
-        if(this.submitJournal) this.submitJournal.addEventListener('click', () => this.handleSubmitJournal());
+        if (this.tabWrite) this.tabWrite.addEventListener('click', () => this.switchJournalTab('write'));
+        if (this.tabHistory) this.tabHistory.addEventListener('click', () => this.switchJournalTab('history'));
 
-        const winBtn = document.getElementById('submit-microwin');
-        if(winBtn) winBtn.addEventListener('click', () => this.handleSubmitMicroWin());
+        this.moodIcons.forEach(btn => {
+            btn.addEventListener('click', () => this.selectedMood = btn.dataset.mood);
+        });
+
+        if (this.submitJournal) this.submitJournal.addEventListener('click', () => this.handleSubmitJournal());
     }
 
-    // --- Core API Chat Logic ---
+    initSpeech() {
+        if (!speech.isSupported) return;
+
+        speech.init(
+            () => {
+                this.isRecording = true;
+                this.micBtn.classList.add('recording');
+                this.statusOrb.classList.add('active');
+                this.statusText.innerText = "Listening...";
+            },
+            (e) => {
+                this.chatInput.value = e.results[0][0].transcript;
+            },
+            () => {
+                this.isRecording = false;
+                this.micBtn.classList.remove('recording');
+                this.statusOrb.classList.remove('active');
+                this.statusText.innerText = "Ready";
+                if (this.chatInput.value) this.handleSendMessage();
+            }
+        );
+
+        this.micBtn.addEventListener('click', () => {
+            this.isRecording ? speech.stop() : speech.start();
+        });
+    }
 
     async handleSendMessage() {
         const text = this.chatInput.value.trim();
         if (!text) return;
 
-        // Visual feedback immediately
         this.addMessage(text, 'user');
         this.chatInput.value = '';
         const typing = this.showTyping();
 
-        console.log(`Serenis Network: Attempting POST to ${this.apiBase}/api/chat`);
-
         try {
-            const response = await fetch(`${this.apiBase}/api/chat`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    text: text, 
-                    mode: this.currentMode,
-                    metrics: this.speechMetrics 
-                })
-            });
-
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
-            const data = await response.json();
-            console.log("Serenis Network: Success", data);
-
+            const data = await api.chat(text, this.currentMode, this.speechMetrics);
             typing.remove();
-            
-            // Handle different potential backend JSON structures
-            const finalMsg = data.reply || data.response || "I am processing your words...";
-            const finalEmo = data.emotion || "Calm";
 
-            this.addMessage(finalMsg, 'bot', finalEmo);
+            const reply = data.reply || "I am processing your words...";
+            const emotion = data.emotion || "Calm";
 
+            this.addMessage(reply, 'bot', emotion);
         } catch (error) {
-            console.error("Serenis Network Error:", error);
             typing.remove();
-            // Fallback to offline mock responses if server is down
             this.handleMockResponse(text);
         }
     }
@@ -192,12 +149,7 @@ class SerenisApp {
 
         wrap.appendChild(bubble);
         this.scrollArea.appendChild(wrap);
-        
-        // Auto-scroll to bottom
-        this.scrollArea.scrollTo({
-            top: this.scrollArea.scrollHeight,
-            behavior: 'smooth'
-        });
+        this.scrollArea.scrollTo({ top: this.scrollArea.scrollHeight, behavior: 'smooth' });
     }
 
     showTyping() {
@@ -209,33 +161,20 @@ class SerenisApp {
         return wrap;
     }
 
-    // --- Navigation & Overlays ---
-
     switchScene(sceneName) {
-        this.overlays.forEach(overlay => overlay.classList.remove('active'));
-        
         this.chatSection.classList.toggle('active', sceneName === 'chat');
         this.calendarSection.classList.toggle('active', sceneName === 'calendar');
-
         this.chatNavBtn.classList.toggle('active', sceneName === 'chat');
         this.calendarBtn.classList.toggle('active', sceneName === 'calendar');
 
-        this.activeScene = sceneName;
         if (sceneName === 'calendar') this.loadMoodTimeline();
     }
 
     toggleOverlay(id, show) {
         const el = document.getElementById(id);
         if (!el) return;
-
-        if (show) {
-            this.overlays.forEach(o => o.classList.remove('active'));
-            el.classList.add('active');
-            if (id === 'reset-section') this.startResetMode();
-        } else {
-            el.classList.remove('active');
-            if (id === 'reset-section') this.resetInProgress = false;
-        }
+        show ? el.classList.add('active') : el.classList.remove('active');
+        if (id === 'reset-section' && show) this.startResetMode();
     }
 
     toggleChatMode(mode) {
@@ -244,14 +183,12 @@ class SerenisApp {
         this.adviceBtn.classList.toggle('active', mode === 'advice');
     }
 
-    // --- Breathing / Journal / Utilities ---
-
     startResetMode() {
         const text = document.querySelector('.breath-text');
         const circle = document.querySelector('.breath-circle');
         const bar = document.getElementById('reset-progress');
         const phrases = ["Breathe in...", "Hold...", "Breathe out..."];
-        
+
         let i = 0;
         let totalSeconds = 0;
         this.resetInProgress = true;
@@ -280,44 +217,14 @@ class SerenisApp {
         loop();
     }
 
-    initSpeech() {
-        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SR) return;
-
-        this.recognition = new SR();
-        this.recognition.continuous = false; // Set to false to auto-send on pause
-        this.recognition.onstart = () => {
-            this.isRecording = true;
-            this.micBtn.classList.add('recording');
-            this.statusOrb.classList.add('active');
-            this.statusText.innerText = "Listening...";
-        };
-
-        this.recognition.onresult = (e) => {
-            this.chatInput.value = e.results[0][0].transcript;
-        };
-
-        this.recognition.onend = () => {
-            this.isRecording = false;
-            this.micBtn.classList.remove('recording');
-            this.statusOrb.classList.remove('active');
-            this.statusText.innerText = "Ready";
-            if(this.chatInput.value) this.handleSendMessage();
-        };
-
-        this.micBtn.addEventListener('click', () => {
-            this.isRecording ? this.recognition.stop() : this.recognition.start();
-        });
-    }
-
     async handleSubmitJournal() {
         const text = this.journalInput.value.trim();
         if (!text) return;
-        
+
         const dateStr = new Date().toISOString().split('T')[0];
         this.userData.moods[dateStr] = this.selectedMood || 'calm';
         this.userData.journals[dateStr] = text;
-        this.saveToStorage();
+        storage.save(this.userData);
 
         this.submitJournal.innerText = "Saved";
         setTimeout(() => {
@@ -327,7 +234,7 @@ class SerenisApp {
     }
 
     loadMoodTimeline() {
-        if(!this.calendarGrid) return;
+        if (!this.calendarGrid) return;
         this.calendarGrid.innerHTML = '';
         Object.keys(this.userData.moods).forEach(date => {
             const day = document.createElement('div');
@@ -344,7 +251,6 @@ class SerenisApp {
     }
 }
 
-// Start App
-document.addEventListener('DOMContentLoaded', () => { 
-    window.serenis = new SerenisApp(); 
+document.addEventListener('DOMContentLoaded', () => {
+    window.serenis = new SerenisApp();
 });
